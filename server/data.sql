@@ -19,4 +19,4 @@ CREATE TABLE refreshToken (
   token_id serial PRIMARY KEY,
   refreshToken VARCHAR(255),
   user_id integer
-)
+);
