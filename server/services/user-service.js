@@ -12,17 +12,21 @@ class UserService {
     const candidate = await pool.query('SELECT * FROM users WHERE email = $1', [
       email
     ])
+
     if (candidate.rows[0]) {
       throw ApiError.badRequest(
         `Candidate is already exists with the same email ${email}`
       )
     }
+
     const hashPassword = await bcrypt.hash(password, 3)
     const activationLink = v4()
+    console.log('hello')
     const user = await pool.query(
       'INSERT INTO users(email,hashed_password,activationLink) VALUES($1,$2,$3) RETURNING *',
       [email, hashPassword, activationLink]
     )
+
     await mailService.sendActivationMail(
       email,
       `${process.env.API_URL}/api/activate/${activationLink}`
