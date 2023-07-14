@@ -9,6 +9,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
+  padding: 0 15px;
 }
 
 .modal {
@@ -17,6 +18,12 @@
   padding: 40px;
   border-radius: 10px;
   box-shadow: rgba(0, 0, 0, 0.05) 0 6px 24px 0, rgba(0, 0, 0, 0.08) 0 0 0 1px;
+}
+
+@media (max-width: 564px) {
+  .modal {
+    padding: 20px;
+  }
 }
 
 .modal .form-title-container {

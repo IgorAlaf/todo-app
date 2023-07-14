@@ -39,7 +39,7 @@ const Todos: FC<{ isAuth: boolean }> = ({ isAuth }) => {
         </button>
       </header>
       <div
-        className="flex items-center justify-center"
+        className="flex items-center justify-center px-[15px]"
         style={{ marginTop: "150px" }}
       >
         <TodoList />
