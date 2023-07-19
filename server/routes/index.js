@@ -4,30 +4,27 @@ import { body } from 'express-validator'
 import { authMiddleware } from '../middlewares/auth-middleware.js'
 import todoController from '../controllers/todo-controller.js'
 const router = new Router()
-const {
-  registration,
-  login,
-  logout,
-  activate,
-  refresh,
-  passwordRecovery,
-  changePassword
-} = userContoller
+const { registration, login, logout, refresh } = userContoller
+
+//? authorization
 router.post(
   '/registration',
   body('email').isEmail(),
-  body('password').isLength({ min: 3, max: 32 }),
+  body('password').isLength({ min: 6, max: 32 }),
   registration
 )
-router.post('/login', login)
-router.post('/logout', logout)
-router.get('/activate/:link', activate)
+router.post(
+  '/login',
+  body('email').isEmail(),
+  body('password').isLength({ min: 6, max: 32 }),
+  login
+)
+router.get('/logout', authMiddleware, logout)
 router.get('/refresh', refresh)
+
 router.get('/todos/:user_id', authMiddleware, todoController.getTodos)
 router.post('/todos', authMiddleware, todoController.AddTodo)
 router.put('/todos/:id', authMiddleware, todoController.changeTodo)
-router.delete('/todos/:id', authMiddleware, todoController.removeTodo)
-router.post('/recoveryPass', passwordRecovery)
-router.post('/changePassword', changePassword)
+router.delete('/todos/:todo_id', authMiddleware, todoController.removeTodo)
 
 export default router

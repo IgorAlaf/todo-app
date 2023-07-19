@@ -14,7 +14,7 @@ class UserController {
         maxAge: 30 * 24 * 60 * 60 * 1000,
         httpOnly: true
       })
-      return res.json(userData)
+      return res.status(201).json(userData)
     } catch (e) {
       next(e)
     }
@@ -26,7 +26,7 @@ class UserController {
       res.cookie('refreshToken', userData.refreshToken, {
         maxAge: 30 * 24 * 60 * 60 * 1000
       })
-      return res.json(userData)
+      return res.status(201).json(userData)
     } catch (e) {
       next(e)
     }
@@ -36,7 +36,7 @@ class UserController {
       const { refreshToken } = req.cookies
       const token = await userService.logout(refreshToken)
       res.clearCookie('refreshToken')
-      return res.json(token)
+      return res.json({ success: 'true' })
     } catch (e) {
       next(e)
     }

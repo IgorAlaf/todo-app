@@ -1,0 +1,629 @@
+---
+openapi: '3.0.0'
+info:
+  description: 'This service manages the todo application'
+  title: 'Todo-app'
+  version: '1.0.0'
+paths:
+  /api/registration:
+    post:
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SignUpDto'
+        description: 'Input data'
+        required: true
+      description: 'User registration'
+      tags:
+        - 'Authorization (user)'
+      responses:
+        201:
+          description: 'User authorization data'
+          headers:
+            Set-Cookie:
+              description: >
+                Contains the session cookie named `RefreshToken`.
+                Pass this cookie back in subsequent requests where it is needed.
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthDto'
+        400:
+          description: 'The request failed'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BadRequest'
+        404:
+          description: 'Not founded'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotFounded'
+        500:
+          description: ' Internal Server Error'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InternalError'
+  /api/login:
+    post:
+      requestBody:
+        $ref: '#/components/requestBodies/SignInDto'
+      description: 'User authorization'
+      tags:
+        - 'Authorization (user)'
+      responses:
+        201:
+          description: 'User authorization data'
+          headers:
+            Set-Cookie:
+              description: >
+                Contains the session cookie named `RefreshToken`.
+                Pass this cookie back in subsequent requests where it is needed.
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthDto'
+        400:
+          description: 'The request failed'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BadRequest'
+        404:
+          description: 'Not founded'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotFounded'
+        500:
+          description: ' Internal Server Error'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InternalError'
+  /api/logout:
+    get:
+      security:
+        - JWT: []
+        - SecurityAuth: []
+      tags:
+        - 'Authorization (user)'
+      responses:
+        200:
+          description: >
+            The session refresh token has been removed from cookie named `RefreshToken`.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SuccessDto'
+
+        400:
+          description: 'The request failed'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BadRequest'
+        401:
+          description: 'Unauthorized'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Unauthorized'
+        404:
+          description: 'Not founded'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotFounded'
+        500:
+          description: ' Internal Server Error'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InternalError'
+  /api/refresh:
+    get:
+      security:
+        - SecurityAuth: []
+      description: 'Get refreshToken'
+      tags:
+        - 'Authorization (user)'
+      responses:
+        200:
+          description: >
+            The new session refresh token is returned in a cookie named `RefreshToken`. You need to include this cookie in subsequent requests.
+          headers:
+            Set-Cookie:
+              description: >
+                Contains the session cookie named `RefreshToken`.
+                Pass this cookie back in subsequent requests where it is needed.
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthDto'
+        400:
+          description: 'The request failed'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BadRequest'
+        401:
+          description: 'Unauthorized'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Unauthorized'
+        404:
+          description: 'Not founded'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotFounded'
+        500:
+          description: ' Internal Server Error'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InternalError'
+  /api/todos/{user_id}:
+    get:
+      parameters:
+        - in: path
+          name: user_id
+          required: true
+          schema:
+            type: integer
+            exmaple: 1
+            minimum: 1
+          description: The user `id`
+      security:
+        - JWT: []
+      description: "Get user's todos"
+      tags:
+        - 'Todos'
+      responses:
+        200:
+          content:
+            application/json:
+              schema:
+                type: 'array'
+                items:
+                  $ref: '#/components/schemas/TodoDto'
+        400:
+          description: 'The request failed'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BadRequest'
+        401:
+          description: 'Unauthorized'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Unauthorized'
+        404:
+          description: 'Not founded'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotFounded'
+        500:
+          description: ' Internal Server Error'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InternalError'
+  /api/todos:
+    post:
+      security:
+        - JWT: []
+      description: 'Add new todo'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AddTodoDto'
+        description: 'Input data'
+        required: true
+      tags:
+        - 'Todos'
+      responses:
+        201:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TodoDto'
+        400:
+          description: 'The request failed'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BadRequest'
+        401:
+          description: 'Unauthorized'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Unauthorized'
+        404:
+          description: 'Not founded'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotFounded'
+        500:
+          description: ' Internal Server Error'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InternalError'
+  /api/todos/{id}:
+    put:
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+            exmaple: 1
+            minimum: 1
+          description: The todo `id`
+      security:
+        - JWT: []
+      description: 'Edit exists todo'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/EditTodoDto'
+        description: 'Input data'
+        required: true
+      tags:
+        - 'Todos'
+      responses:
+        200:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TodoDto'
+        400:
+          description: 'The request failed'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BadRequest'
+        401:
+          description: 'Unauthorized'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Unauthorized'
+        404:
+          description: 'Not founded'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotFounded'
+        500:
+          description: ' Internal Server Error'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InternalError'
+  /api/todos/{todo_id}:
+    delete:
+      parameters:
+        - in: path
+          name: todo_id
+          required: true
+          schema:
+            type: integer
+            example: 1
+            minimum: 1
+          description: The todo `id`
+        - in: query
+          name: user_id
+          required: true
+          schema:
+            type: integer
+            example: 1
+            minimum: 1
+          description: The user `id`
+      security:
+        - JWT: []
+      description: "Delete user's todo"
+      tags:
+        - 'Todos'
+      responses:
+        200:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TodoDto'
+        400:
+          description: 'The request failed'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BadRequest'
+        401:
+          description: 'Unauthorized'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Unauthorized'
+        404:
+          description: 'Not founded'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotFounded'
+        500:
+          description: ' Internal Server Error'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InternalError'
+tags:
+  - name: 'Authorization (user)'
+    description: 'Functions for user authorization'
+  - name: 'Todos'
+    descripotion: 'Functions for control todos'
+servers:
+  - url: 'http://2.59.41.2:4300'
+  - url: 'https://2.59.41.2:4300'
+components:
+  requestBodies:
+    SignInDto:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/SignInDto'
+      description: 'Input data'
+      required: true
+    LogoutDto:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/LogoutDto'
+      description: 'Input data'
+      required: true
+  securitySchemes:
+    SecurityAuth:
+      type: 'apiKey'
+      in: 'cookie'
+      name: 'refreshToken'
+      description: ' token'
+    JWT:
+      type: 'apiKey'
+      in: 'header'
+      name: 'Authorization'
+      description: 'Access token'
+
+  schemas:
+    AuthDto:
+      required:
+        - 'accessToken'
+        - 'refreshToken'
+        - 'user'
+      properties:
+        accessToken:
+          type: 'string'
+          example: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmaXJzdE5hbWUiOiJJZ29yIiwibGFzdE5hbWUiOiJBbGFmaW5vdmeyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmaXJzdE5hbWUiOiJJZ29yIiwibGFzdE5hbW'
+          description: ''
+        refresh_token:
+          type: 'string'
+          example: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmaXJzdE5hbWUiOiJJZ29yIiwibGFzdE5hbWUiOiJBbGFmaW5vdmZzZmFzZGFmIiwiZW1haWwiOiJpZ29zNTMyMDA2QGdtYWlsLmNvbSIsImNpdHkiOiJNb3Njb3ciL'
+          description: ''
+        user:
+          $ref: '#/components/schemas/UserDto'
+    SignInDto:
+      required:
+        - 'email'
+        - 'password'
+      properties:
+        email:
+          type: 'string'
+          example: 'textmail@gmail.com'
+          minLength: 6
+          maxLength: 50
+          pattern: '^[a-zA-Z0-9_.-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$'
+          description: ''
+        password:
+          type: 'string'
+          example: 'hwp234klasdf'
+          minLength: 6
+          maxLength: 50
+          description: ''
+    SignUpDto:
+      required:
+        - 'email'
+        - 'password'
+      properties:
+        email:
+          type: 'string'
+          example: 'testmail@gmail.com'
+          minLength: 6
+          maxLength: 50
+          pattern: '^[a-zA-Z0-9_.-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$'
+          description: ''
+        password:
+          minLength: 6
+          maxLength: 50
+          type: 'string'
+          example: 'hwp234klasdf'
+          description: ''
+    SuccessDto:
+      required:
+        - 'success'
+      properties:
+        success:
+          type: 'boolean'
+          description: ''
+    BadRequest:
+      required:
+        - 'message'
+        - 'errors'
+      properties:
+        message:
+          type: 'string'
+          maxLength: 50
+          example: 'Bad request'
+          description: 'Bad request(400)'
+        errors:
+          type: 'array'
+          items:
+            $ref: '#/components/schemas/FieldError'
+    Unauthorized:
+      required:
+        - 'message'
+        - 'errors'
+      properties:
+        message:
+          type: 'string'
+          maxLength: 50
+          example: 'User not authorized'
+          description: 'Unauthorized(401)'
+        errors:
+          type: 'array'
+          items:
+            $ref: '#/components/schemas/FieldError'
+    NotFounded:
+      required:
+        - 'message'
+        - 'errors'
+      properties:
+        message:
+          type: 'string'
+          maxLength: 50
+          example: 'NotFounded'
+          description: 'NotFounded(404)'
+        errors:
+          type: 'array'
+          items:
+            $ref: '#/components/schemas/FieldError'
+    InternalError:
+      required:
+        - 'message'
+        - 'errors'
+      properties:
+        message:
+          type: 'string'
+          maxLength: 50
+          example: 'InternalError'
+          description: 'InternalError(500)'
+        errors:
+          type: 'array'
+          items:
+            $ref: '#/components/schemas/FieldError'
+    FieldError:
+      required:
+        - 'msg'
+        - 'path'
+        - 'location'
+        - 'type'
+      properties:
+        type:
+          type: 'string'
+          maxLength: 50
+          example: 'field'
+          description: ''
+        msg:
+          type: 'string'
+          maxLength: 50
+          example: 'Something Error'
+          description: ''
+        path:
+          type: 'string'
+          maxLength: 50
+          example: 'http://2.59.41.2:4300/api/app.js'
+          description: ''
+        location:
+          type: 'string'
+          maxLength: 50
+          example: body
+          description: ''
+    UserDto:
+      required:
+        - 'email'
+        - 'id'
+      properties:
+        email:
+          type: 'string'
+          example: 'textmail@gmail.com'
+          minLength: 6
+          maxLength: 50
+          pattern: '^[a-zA-Z0-9_.-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$'
+          description: ''
+        id:
+          type: 'number'
+          minimum: 1
+          example: 1
+          description: ''
+    TodoDto:
+      required:
+        - 'todo_id'
+        - 'user_id'
+        - 'title'
+        - 'completed'
+      properties:
+        todo_id:
+          type: 'number'
+          minimum: 1
+          example: 1
+          desciption: ''
+        user_id:
+          type: 'number'
+          minimum: 1
+          example: 1
+          description: ''
+        title:
+          type: 'string'
+          minLength: 1
+          example: 'Make dinner'
+          description: ''
+        completed:
+          type: 'boolean'
+          example: false
+    AddTodoDto:
+      required:
+        - 'user_id'
+        - 'title'
+      properties:
+        user_id:
+          type: 'number'
+          minimum: 1
+          example: 1
+          description: ''
+        title:
+          type: 'string'
+          minLength: 1
+          example: 'Make dinner'
+          description: ''
+    EditTodoDto:
+      required:
+        - 'user_id'
+        - 'title'
+        - 'completed'
+      properties:
+        user_id:
+          type: 'number'
+          minimum: 1
+          example: 1
+          description: ''
+        title:
+          type: 'string'
+          minLength: 1
+          example: 'Make dinner'
+        completed:
+          type: 'boolean'
+          example: 'false'

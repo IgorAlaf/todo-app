@@ -7,8 +7,6 @@ import store from './store/store'
 import { createBrowserRouter, RouterProvider } from 'react-router-dom'
 import Authorization from './components/auth/Authorization'
 import LoginForm from './components/auth/LoginForm'
-import Todos from './components/todos/Todos'
-import RecoveryPassword from './components/auth/RecoveryPassword'
 
 const router = createBrowserRouter([
   {
@@ -16,7 +14,7 @@ const router = createBrowserRouter([
     element: <App />
   },
   {
-    path: '/Todos',
+    path: '/todos',
     element: <App />
   },
   {
@@ -26,11 +24,6 @@ const router = createBrowserRouter([
   {
     path: '/auth/login',
     element: <LoginForm />
-  },
-
-  {
-    path: '/auth/recoveryPass',
-    element: <RecoveryPassword />
   }
 ])
 

@@ -5,6 +5,7 @@ import $api from '../http'
 export default class TodoService {
   static async add(title: string): Promise<AxiosResponse<TodoResponse>> {
     const user_id = localStorage.getItem('user_id')
+
     return $api.post<TodoResponse>('/todos', { title, user_id })
   }
   static async get(): Promise<AxiosResponse<TodoResponse[]>> {

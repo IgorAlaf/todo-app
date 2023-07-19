@@ -3,8 +3,7 @@ import ListItem from './ListItem'
 import AddItem from './AddItem'
 import HeaderTodo from './HeaderTodo'
 import { useAppDispatch } from '../../hooks/useAppDispatch'
-import { ITodo } from '../../types/todo.interface'
-import { fetchCheckAuth, fetchGetTodos } from '../../store/AsyncFunctions'
+import { fetchGetTodos } from '../../store/AsyncFunctions'
 import { useAppSelector } from '../../hooks/useAppSelector'
 import Paginate from '../paginate/Paginate'
 
@@ -19,9 +18,6 @@ const TodoList: FC = () => {
     }
     getTodos()
   }, [])
-
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-
   const paginate = (pageNumber: number) => setCurrentPage(pageNumber)
   const lastTodo = currentPage * tasksInPage
   const firstTodo = lastTodo - tasksInPage
