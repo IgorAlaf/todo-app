@@ -1,6 +1,5 @@
 import bcrypt from 'bcrypt'
 import { v4 } from 'uuid'
-import mailService from './mail-service.js'
 import { UserDto } from '../dtos/user-dto.js'
 import tokenService from './token-service.js'
 import { ApiError } from '../exceptions/api-error.js'
@@ -76,6 +75,7 @@ class UserService {
   }
   async logout(refreshToken) {
     const token = await tokenService.removeToken(refreshToken)
+    changeUserId(0)
     return token
   }
   async refresh(refreshToken) {

@@ -1,7 +1,7 @@
 import { ApiError } from '../exceptions/api-error.js'
 import tokenService from '../services/token-service.js'
-
-export const authMiddleware = function (req, res, next) {
+import jwt from 'jsonwebtoken'
+export const authMiddleware = async function (req, res, next) {
   try {
     const authorizationHeader = req.headers.authorization
     if (!authorizationHeader) {
@@ -9,6 +9,16 @@ export const authMiddleware = function (req, res, next) {
     }
     const accessToken = authorizationHeader.split(' ')[1]
     if (!accessToken) {
+      return next(ApiError.unauthorizedError())
+    }
+    const userId = jwt.verify(accessToken, process.env.JWT_ACCESS_SECRET)
+    if (
+      userId.id !=
+      (req.body.user_id ||
+        req.body.userId ||
+        req.params.user_id ||
+        req.query.user_id)
+    ) {
       return next(ApiError.unauthorizedError())
     }
     const userData = tokenService.validateAccessToken(accessToken)
