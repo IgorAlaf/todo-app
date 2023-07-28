@@ -382,7 +382,6 @@ tags:
 servers:
   - url: 'http://2.59.41.2:4300'
   - url: 'https://2.59.41.2:4300'
-  - url: 'http://localhost:4300'
 components:
   requestBodies:
     SignInDto:
