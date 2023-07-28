@@ -33,27 +33,44 @@ const ListItem = ({ todo }: IProps) => {
   return (
     <li
       className={cn(
-        'flex text-black border-t-2 justify-between py-2 px-4 bg-[#F2F2F2]',
-        { 'bg-gray-300': check }
+        'flex text-black justify-between p px-2 py-[3px]',
+        { 'bg-white': check },
+        { 'bg-[#D9D9D9]': !check }
       )}
       style={{ width: '100%' }}
     >
-      <label className='flex gap-4 cursor-pointer items-center'>
-        <input type='checkbox' checked={check} onChange={handleCheck} />
-        <p className={cn({ 'line-through': check }, 'select-none')}>
+      <label className='flex gap-1 cursor-pointer items-center justify-center'>
+        <div className='container flex-1 '>
+          <input
+            type='checkbox'
+            className='checkbox'
+            checked={check}
+            onChange={handleCheck}
+          />
+          <span className='checkmark'></span>
+        </div>
+        <p className='select-none text-[20px] sm:text-[16px] xs:text-[14px] text-clip break-all'>
           {todo.title}
         </p>
       </label>
 
-      <div className='flex gap-3'>
+      <div className='flex gap-3 sm:gap-1'>
         <button className='' onClick={() => setShowModal(true)}>
-          <div className='bg-green-700 p-2 rounded-sm'>
-            <AiTwotoneEdit color='white' />
+          <div className=''>
+            <img
+              className='w-[28px] hr:w-[22px]'
+              src='images/pencil-edit.svg'
+              alt='delete'
+            />
           </div>
         </button>
         <button className='' onClick={deleteItem}>
-          <div className='bg-red-700 p-2 rounded-sm'>
-            <BsFillTrash3Fill color='white' />
+          <div className=''>
+            <img
+              className='w-[28px] hr:w-[22px]'
+              src='images/remove.svg'
+              alt='hello'
+            />
           </div>
         </button>
       </div>

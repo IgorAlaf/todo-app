@@ -14,7 +14,7 @@ export default class TodoService {
   }
   static async remove(id: number): Promise<AxiosResponse<TodoResponse>> {
     const user_id = localStorage.getItem('user_id')
-    return $api.delete<TodoResponse>(`/todos/${id}?user_id=${user_id}`)
+    return $api.delete<TodoResponse>(`/todos/${user_id}/${id}`)
   }
   static async edit(
     id: number,

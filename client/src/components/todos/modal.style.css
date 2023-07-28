@@ -1,9 +1,9 @@
 /* Modal */
 .overlay {
-  position: absolute;
+  position: fixed;
+  width: 100vw;
   left: 0;
   top: 0;
-  width: 100vw;
   height: 100vh;
   background-color: rgba(0, 0, 0, 0.5);
   display: flex;
@@ -47,4 +47,68 @@
 
 .modal label {
   font-size: 13px;
+}
+
+.container {
+  display: block;
+  position: relative;
+  padding-left: 20px;
+  margin-bottom: 16px;
+  cursor: pointer;
+  font-size: 22px;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+.container input {
+  position: absolute;
+  opacity: 0;
+  cursor: pointer;
+  height: 0;
+  width: 0;
+}
+
+.checkmark {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 17px;
+  width: 17px;
+  border: 0.773px solid rgba(0, 0, 0, 0.8);
+  border-radius: 3px;
+}
+.checkmark:after {
+  content: '';
+  position: absolute;
+  display: none;
+}
+.container input:checked ~ .checkmark:after {
+  display: block;
+}
+
+.container .checkmark:after {
+  left: -29%;
+  top: -68%;
+  width: 30px;
+  height: 30px;
+  content: '';
+  background-image: url('./tick.svg');
+  background-size: cover;
+  background-position: center;
+}
+
+@media (max-width: 541px) {
+  .checkmark {
+    width: 14px;
+    height: 14px;
+    top: 1px;
+  }
+  .container .checkmark:after {
+    width: 20px;
+    height: 20px;
+    left: -15%;
+    top: -60%;
+  }
 }

@@ -7,7 +7,7 @@ interface IProps {
 const HeaderTodo: FC<IProps> = ({ capacity }) => {
   return (
     <div
-      className='bg-gray-200 py-2 px-4 font-semibold text-lg'
+      className=' text-white py-[8px] text-[20px] '
       style={{ width: '100%' }}
     >
       <h2>Todos({capacity})</h2>

@@ -25,6 +25,10 @@ router.get('/refresh', refresh)
 router.get('/todos/:user_id', authMiddleware, todoController.getTodos)
 router.post('/todos', authMiddleware, todoController.AddTodo)
 router.put('/todos/:id', authMiddleware, todoController.changeTodo)
-router.delete('/todos/:todo_id', authMiddleware, todoController.removeTodo)
+router.delete(
+  '/todos/:user_id/:todo_id',
+  authMiddleware,
+  todoController.removeTodo
+)
 
 export default router

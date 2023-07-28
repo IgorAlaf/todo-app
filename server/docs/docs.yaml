@@ -319,9 +319,17 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/InternalError'
-  /api/todos/{todo_id}:
+  /api/todos/{user_id}/{todo_id}:
     delete:
       parameters:
+        - in: path
+          name: user_id
+          required: true
+          schema:
+            type: integer
+            example: 1
+            minimum: 1
+          description: The user `id`
         - in: path
           name: todo_id
           required: true
@@ -330,14 +338,7 @@ paths:
             example: 1
             minimum: 1
           description: The todo `id`
-        - in: query
-          name: user_id
-          required: true
-          schema:
-            type: integer
-            example: 1
-            minimum: 1
-          description: The user `id`
+
       security:
         - JWT: []
       description: "Delete user's todo"
@@ -381,6 +382,7 @@ tags:
 servers:
   - url: 'http://2.59.41.2:4300'
   - url: 'https://2.59.41.2:4300'
+  - url: 'http://localhost:4300'
 components:
   requestBodies:
     SignInDto:
@@ -589,6 +591,7 @@ components:
         title:
           type: 'string'
           minLength: 1
+          maxLength: 30
           example: 'Make dinner'
           description: ''
         completed:
@@ -607,6 +610,7 @@ components:
         title:
           type: 'string'
           minLength: 1
+          maxLength: 30
           example: 'Make dinner'
           description: ''
     EditTodoDto:
@@ -623,6 +627,7 @@ components:
         title:
           type: 'string'
           minLength: 1
+          maxLength: 30
           example: 'Make dinner'
         completed:
           type: 'boolean'

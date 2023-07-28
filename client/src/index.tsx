@@ -7,6 +7,7 @@ import store from './store/store'
 import { createBrowserRouter, RouterProvider } from 'react-router-dom'
 import Authorization from './components/auth/Authorization'
 import LoginForm from './components/auth/LoginForm'
+import Layout from './components/layout/Layout'
 
 const router = createBrowserRouter([
   {
@@ -19,11 +20,19 @@ const router = createBrowserRouter([
   },
   {
     path: '/auth',
-    element: <Authorization />
+    element: (
+      <Layout text='Sign in'>
+        <Authorization />
+      </Layout>
+    )
   },
   {
     path: '/auth/login',
-    element: <LoginForm />
+    element: (
+      <Layout text='Sign up'>
+        <LoginForm />
+      </Layout>
+    )
   }
 ])
 

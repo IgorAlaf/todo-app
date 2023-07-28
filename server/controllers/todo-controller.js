@@ -29,6 +29,14 @@ class TodoController {
   async AddTodo(req, res, next) {
     const { user_id, title } = req.body
     try {
+      if (title.length > 30) {
+        throw ApiError.badRequest("Title can't be more than 30 symbols", {
+          type: 'field',
+          location: 'user_id',
+          msd: 'title field is not valid',
+          path: `${process.env.API_UTL}/api/todos`
+        })
+      }
       const users = await pool.query('SELECT user_id FROM users')
       const user = users.rows.find(item => item.user_id == user_id)
       if (!user) {
@@ -61,9 +69,8 @@ class TodoController {
     }
   }
   async removeTodo(req, res, next) {
-    const { todo_id } = req.params
+    const { todo_id, user_id } = req.params
     const id = todo_id
-    const { user_id } = req.query
     try {
       const users = await pool.query('SELECT user_id FROM users')
       const user = users.rows.find(item => item.user_id == user_id)
@@ -100,6 +107,14 @@ class TodoController {
     const { id } = req.params
     const { title, completed, user_id } = req.body
     try {
+      if (title.length > 30) {
+        throw ApiError.badRequest("Title can't be more than 30 symbols", {
+          type: 'field',
+          location: 'title',
+          msg: 'Title field is not valid',
+          path: `${process.env.API_URL}/api/todos/{todo_id}`
+        })
+      }
       const users = await pool.query('SELECT user_id FROM users')
       const user = users.rows.find(item => item.user_id == user_id)
       if (!user) {

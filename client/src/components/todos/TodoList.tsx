@@ -22,13 +22,14 @@ const TodoList: FC = () => {
   const lastTodo = currentPage * tasksInPage
   const firstTodo = lastTodo - tasksInPage
   return (
-    <div
-      className='flex flex-col items-center borer-solid border-8  border-gray-200 '
-      style={{ width: '700px', minHeight: '432px' }}
-    >
+    <div className='flex flex-col items-center mx-auto bg-[#163235] rounded-[5px] px-[78px] pb-[78px] pt-[3px] relative max-w-[910px] min-h-[404px] lg:max-w-[700px] md:px-[45px] md:max-w-[600px] hr:px-[25px] hr:max-w-[450px]'>
       <HeaderTodo capacity={todos.length} />
+      <div className='absolute w-[100%] h-[1px] bg-[#828282] top-[50px]'></div>
       <AddItem />
-      <ul style={{ width: '100%', flex: '1 1 auto' }} className='bg-gray-300'>
+      <ul
+        style={{ width: '100%', flex: '1 1 auto' }}
+        className=' flex flex-col gap-y-[15px]'
+      >
         {todos.slice(firstTodo, lastTodo).map(task => (
           <ListItem key={task.todo_id} todo={task} />
         ))}
