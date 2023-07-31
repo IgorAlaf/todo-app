@@ -19,7 +19,7 @@ router.post(
   body('password').isLength({ min: 6, max: 32 }),
   login
 )
-router.get('/logout', authMiddleware, logout)
+router.get('/logout', logout)
 router.get('/refresh', refresh)
 
 router.get('/todos/:user_id', authMiddleware, todoController.getTodos)

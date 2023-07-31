@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { ChangeEventHandler, useState } from 'react'
 import Modal from './Modal'
 import { ITodo } from '../../types/todo.interface'
 import { BsFillTrash3Fill } from 'react-icons/bs'
@@ -12,13 +12,16 @@ interface IProps {
 
 const ListItem = ({ todo }: IProps) => {
   const [showModal, setShowModal] = useState(false)
-  const [check, setCheck] = useState<boolean>(false)
+  const [check, setCheck] = useState<boolean>(todo.completed)
   const dispath = useAppDispatch()
-  const handleCheck = async () => {
-    setCheck(prev => !prev)
-    const response = await dispath(
-      fetchEditTodo(todo.todo_id, { title: todo.title, completed: check })
+  const handleCheck: ChangeEventHandler<HTMLInputElement> = async e => {
+    await dispath(
+      fetchEditTodo(todo.todo_id, {
+        title: todo.title,
+        completed: !check
+      })
     )
+    setCheck(!check)
   }
   const deleteItem = async () => {
     try {
