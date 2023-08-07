@@ -38,7 +38,7 @@ const LoginForm: FC = () => {
   }
   return (
     <div
-      className='flex items-center justify-center flex-col gap-5 mt-[238px]'
+      className='flex items-center justify-center flex-col gap-5 mt-[105px]'
       style={{ height: '100%' }}
     >
       <form

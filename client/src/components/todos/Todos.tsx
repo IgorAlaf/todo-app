@@ -12,7 +12,7 @@ const Todos: FC<{ isAuth: boolean }> = ({ isAuth }) => {
 
   return (
     <div>
-      <div className=' px-[15px] mt-[210px]'>
+      <div className=' px-[15px] mt-[210px] hr:mt-[100px]'>
         <TodoList />
       </div>
     </div>
